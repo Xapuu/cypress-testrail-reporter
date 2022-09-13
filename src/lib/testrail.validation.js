@@ -1,5 +1,5 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 exports.TestRailValidation = void 0;
 var glob = require('glob');
 var TestRailLogger = require('./testrail.logger');
@@ -22,7 +22,7 @@ var TestRailValidation = /** @class */ (function () {
     };
     TestRailValidation.prototype.validate = function (options, name) {
         if (options[name] == null) {
-            throw new Error("Missing " + name + " value. Please update options in cypress.json");
+            throw new Error("Missing ".concat(name, " value. Please update options in cypress.json"));
         }
     };
     /**
@@ -61,7 +61,7 @@ var TestRailValidation = /** @class */ (function () {
             // Find value of suiteId and store it in envVariable
             var suiteId = resultArray.find(function (el) { return el.length < 15; });
             if (suiteId.length != 0) {
-                TestRailLogger.log("Following suiteId has been set in runtime environment variables: " + suiteId);
+                TestRailLogger.log("Following suiteId has been set in runtime environment variables: ".concat(suiteId));
             }
             return suiteId;
         }
@@ -118,4 +118,3 @@ var TestRailValidation = /** @class */ (function () {
     return TestRailValidation;
 }());
 exports.TestRailValidation = TestRailValidation;
-//# sourceMappingURL=testrail.validation.js.map

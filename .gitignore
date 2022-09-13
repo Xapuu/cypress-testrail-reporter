@@ -1,6 +1,8 @@
 node_modules
 node-debug*
+dist
 .c9/
 *.iml
 .idea/
+.vscode/
 npm-debug.log

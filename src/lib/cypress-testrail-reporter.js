@@ -14,7 +14,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 exports.CypressTestRailReporter = void 0;
 var mocha_1 = require("mocha");
 var moment = require("moment");
@@ -85,10 +85,10 @@ var CypressTestRailReporter = /** @class */ (function (_super) {
                 */
                 if (!TestRailCache.retrieve('runId')) {
                     if (_this.reporterOptions.suiteId) {
-                        TestRailLogger.log("Following suiteId has been set in cypress.json file: " + _this.suiteId);
+                        TestRailLogger.log("Following suiteId has been set in cypress.json file: ".concat(_this.suiteId));
                     }
                     var executionDateTime = moment().format('MMM Do YYYY, HH:mm (Z)');
-                    var name_1 = (_this.reporterOptions.runName || 'Automated test run') + " " + executionDateTime;
+                    var name_1 = "".concat(_this.reporterOptions.runName || 'Automated test run', " ").concat(executionDateTime);
                     if (_this.reporterOptions.disableDescription) {
                         var description = '';
                     }
@@ -100,20 +100,20 @@ var CypressTestRailReporter = /** @class */ (function (_super) {
                             var description = 'For the Cypress run visit https://dashboard.cypress.io/#/projects/runs';
                         }
                     }
-                    TestRailLogger.log("Creating TestRail Run with name: " + name_1);
+                    TestRailLogger.log("Creating TestRail Run with name: ".concat(name_1));
                     _this.testRailApi.createRun(name_1, description, _this.suiteId);
                 }
                 else {
                     // use the cached TestRail Run ID
                     _this.runId = TestRailCache.retrieve('runId');
-                    TestRailLogger.log("Using existing TestRail Run with ID: '" + _this.runId + "'");
+                    TestRailLogger.log("Using existing TestRail Run with ID: '".concat(_this.runId, "'"));
                 }
             });
             runner.on('pass', function (test) {
-                _this.submitResults(testrail_interface_1.Status.Passed, test, "Execution time: " + test.duration + "ms");
+                _this.submitResults(testrail_interface_1.Status.Passed, test, "Execution time: ".concat(test.duration, "ms"));
             });
             runner.on('fail', function (test, err) {
-                _this.submitResults(testrail_interface_1.Status.Failed, test, "" + err.message);
+                _this.submitResults(testrail_interface_1.Status.Failed, test, "".concat(err.message));
             });
             runner.on('retry', function (test) {
                 _this.submitResults(testrail_interface_1.Status.Retest, test, 'Cypress retry logic has been triggered!');
@@ -144,8 +144,8 @@ var CypressTestRailReporter = /** @class */ (function (_super) {
                     TestRailLogger.warn('No testcases were matched with TestRail. Ensure that your tests are declared correctly and titles contain matches to format of Cxxxx');
                 }
                 else {
-                    var path = "runs/view/" + _this.runId;
-                    TestRailLogger.log("Results are published to " + chalk.magenta(_this.reporterOptions.host + "/index.php?/" + path));
+                    var path = "runs/view/".concat(_this.runId);
+                    TestRailLogger.log("Results are published to ".concat(chalk.magenta("".concat(_this.reporterOptions.host, "/index.php?/").concat(path))));
                 }
             });
         }
@@ -164,13 +164,13 @@ var CypressTestRailReporter = /** @class */ (function (_super) {
         var invalidCaseIds = caseIds.filter(function (caseId) { return !_this.serverTestCaseIds.includes(caseId); });
         caseIds = caseIds.filter(function (caseId) { return _this.serverTestCaseIds.includes(caseId); });
         if (invalidCaseIds.length > 0)
-            TestRailLogger.log("The following test IDs were found in Cypress tests, but not found in Testrail: " + invalidCaseIds);
+            TestRailLogger.log("The following test IDs were found in Cypress tests, but not found in Testrail: ".concat(invalidCaseIds));
         if (caseIds.length) {
             var caseResults = caseIds.map(function (caseId) {
                 return {
                     case_id: caseId,
                     status_id: status,
-                    comment: comment,
+                    comment: comment
                 };
             });
             (_a = this.results).push.apply(_a, caseResults);
@@ -187,4 +187,3 @@ var CypressTestRailReporter = /** @class */ (function (_super) {
     return CypressTestRailReporter;
 }(mocha_1.reporters.Spec));
 exports.CypressTestRailReporter = CypressTestRailReporter;
-//# sourceMappingURL=cypress-testrail-reporter.js.map

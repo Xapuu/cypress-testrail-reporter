@@ -1,5 +1,5 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 exports.titleToCaseIds = void 0;
 /**
  * Search for all applicable test cases
@@ -17,4 +17,3 @@ function titleToCaseIds(title) {
     return caseIds;
 }
 exports.titleToCaseIds = titleToCaseIds;
-//# sourceMappingURL=shared.js.map

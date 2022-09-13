@@ -46,7 +46,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 exports.TestRail = void 0;
 var axios = require('axios');
 var deasync = require('deasync');
@@ -60,7 +60,7 @@ var TestRail = /** @class */ (function () {
         this.options = options;
         this.includeAll = true;
         this.caseIds = [];
-        this.base = options.host + "/index.php?/api/v2";
+        this.base = "".concat(options.host, "/index.php?/api/v2");
         this.runId;
     }
     /**
@@ -76,7 +76,7 @@ var TestRail = /** @class */ (function () {
         var result = undefined;
         (function () { return __awaiter(_this, void 0, void 0, function () { return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, promise.finally(function () { return done = true; })];
+                case 0: return [4 /*yield*/, promise["finally"](function () { return done = true; })];
                 case 1: return [2 /*return*/, result = _a.sent()];
             }
         }); }); })();
@@ -84,15 +84,15 @@ var TestRail = /** @class */ (function () {
         return result;
     };
     TestRail.prototype.getCases = function (suiteId) {
-        var url = this.base + "/get_cases/" + this.options.projectId + "&suite_id=" + suiteId;
+        var url = "".concat(this.base, "/get_cases/").concat(this.options.projectId, "&suite_id=").concat(suiteId);
         if (this.options.groupId) {
-            url += "&section_id=" + this.options.groupId;
+            url += "&section_id=".concat(this.options.groupId);
         }
         if (this.options.filter) {
-            url += "&filter=" + this.options.filter;
+            url += "&filter=".concat(this.options.filter);
         }
         if (this.options.typeId) {
-            url += "&type_id=" + this.options.typeId;
+            url += "&type_id=".concat(this.options.typeId);
         }
         return this.makeSync(axios({
             method: 'get',
@@ -105,8 +105,7 @@ var TestRail = /** @class */ (function () {
         })
             .then(function (response) {
             return response.data.cases.map(function (item) { return item.id; });
-        })
-            .catch(function (error) { return console.error(error); }));
+        })["catch"](function (error) { return console.error(error); }));
     };
     TestRail.prototype.createRun = function (name, description, suiteId) {
         var _this = this;
@@ -116,11 +115,11 @@ var TestRail = /** @class */ (function () {
         }
         this.makeSync(axios({
             method: 'post',
-            url: this.base + "/add_run/" + this.options.projectId,
+            url: "".concat(this.base, "/add_run/").concat(this.options.projectId),
             headers: { 'Content-Type': 'application/json' },
             auth: {
                 username: this.options.username,
-                password: this.options.password,
+                password: this.options.password
             },
             data: JSON.stringify({
                 suite_id: suiteId,
@@ -128,41 +127,39 @@ var TestRail = /** @class */ (function () {
                 description: description,
                 include_all: this.includeAll,
                 case_ids: this.caseIds
-            }),
+            })
         })
             .then(function (response) {
             _this.runId = response.data.id;
             // cache the TestRail Run ID
             TestRailCache.store('runId', _this.runId);
-        })
-            .catch(function (error) { return console.error(error); }));
+        })["catch"](function (error) { return console.error(error); }));
     };
     TestRail.prototype.deleteRun = function () {
         this.runId = TestRailCache.retrieve('runId');
         this.makeSync(axios({
             method: 'post',
-            url: this.base + "/delete_run/" + this.runId,
+            url: "".concat(this.base, "/delete_run/").concat(this.runId),
             headers: { 'Content-Type': 'application/json' },
             auth: {
                 username: this.options.username,
-                password: this.options.password,
-            },
-        }).catch(function (error) { return console.error(error); }));
+                password: this.options.password
+            }
+        })["catch"](function (error) { return console.error(error); }));
     };
     TestRail.prototype.publishResults = function (results) {
         this.runId = TestRailCache.retrieve('runId');
         return this.makeSync(axios({
             method: 'post',
-            url: this.base + "/add_results_for_cases/" + this.runId,
+            url: "".concat(this.base, "/add_results_for_cases/").concat(this.runId),
             headers: { 'Content-Type': 'application/json' },
             auth: {
                 username: this.options.username,
-                password: this.options.password,
+                password: this.options.password
             },
-            data: JSON.stringify({ results: results }),
+            data: JSON.stringify({ results: results })
         })
-            .then(function (response) { return response.data; })
-            .catch(function (error) {
+            .then(function (response) { return response.data; })["catch"](function (error) {
             console.error(error);
         }));
     };
@@ -171,13 +168,13 @@ var TestRail = /** @class */ (function () {
         form.append('attachment', fs.createReadStream(path));
         this.makeSync(axios({
             method: 'post',
-            url: this.base + "/add_attachment_to_result/" + resultId,
+            url: "".concat(this.base, "/add_attachment_to_result/").concat(resultId),
             headers: __assign({}, form.getHeaders()),
             auth: {
                 username: this.options.username,
-                password: this.options.password,
+                password: this.options.password
             },
-            data: form,
+            data: form
         }));
     };
     // This function will attach failed screenshot on each test result(comment) if founds it
@@ -189,7 +186,7 @@ var TestRail = /** @class */ (function () {
                 return console.log('Unable to scan screenshots folder: ' + err);
             }
             files.forEach(function (file) {
-                if (file.includes("C" + caseId) && /(failed|attempt)/g.test(file)) {
+                if (file.includes("C".concat(caseId)) && /(failed|attempt)/g.test(file)) {
                     try {
                         _this.uploadAttachment(resultId, SCREENSHOTS_FOLDER_PATH + file);
                     }
@@ -205,19 +202,17 @@ var TestRail = /** @class */ (function () {
         this.runId = TestRailCache.retrieve('runId');
         this.makeSync(axios({
             method: 'post',
-            url: this.base + "/close_run/" + this.runId,
+            url: "".concat(this.base, "/close_run/").concat(this.runId),
             headers: { 'Content-Type': 'application/json' },
             auth: {
                 username: this.options.username,
-                password: this.options.password,
-            },
+                password: this.options.password
+            }
         })
             .then(function () {
             TestRailLogger.log('Test run closed successfully');
-        })
-            .catch(function (error) { return console.error(error); }));
+        })["catch"](function (error) { return console.error(error); }));
     };
     return TestRail;
 }());
 exports.TestRail = TestRail;
-//# sourceMappingURL=testrail.js.map
