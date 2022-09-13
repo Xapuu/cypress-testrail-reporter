@@ -1,5 +1,5 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 exports.Status = void 0;
 var Status;
 (function (Status) {
@@ -9,4 +9,3 @@ var Status;
     Status[Status["Retest"] = 4] = "Retest";
     Status[Status["Failed"] = 5] = "Failed";
 })(Status = exports.Status || (exports.Status = {}));
-//# sourceMappingURL=testrail.interface.js.map
